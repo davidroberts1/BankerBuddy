@@ -6,4 +6,11 @@ c:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\andr
 c:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\classes\com\phonegap\helloworld\R$string.class \
 c:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\classes\com\phonegap\helloworld\R$xml.class \
 c:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\classes\com\phonegap\helloworld\R.class \
+c:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\classes\io\cordova\hellocordova\BuildConfig.class \
+c:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\classes\io\cordova\hellocordova\HelloWorld.class \
+c:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\classes\io\cordova\hellocordova\R$attr.class \
+c:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\classes\io\cordova\hellocordova\R$drawable.class \
+c:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\classes\io\cordova\hellocordova\R$string.class \
+c:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\classes\io\cordova\hellocordova\R$xml.class \
+c:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\classes\io\cordova\hellocordova\R.class \
 c:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\dexedLibs\classes-6f562314802a5d2d1c12d260d4e93d5f.jar \
