@@ -1,7 +1,7 @@
-Onsen UI Quick Startup Guide
+BankerBuddy 
 ====
 
-This document describes the minimum information required to develop an app using Onsen UI.
+This
 
 ## Requirement
 
