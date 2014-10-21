@@ -13,9 +13,25 @@
   // Cordova is ready
   //
   function onDeviceReady() {
-    navigator.splashscreen.show();
-	var db = window.openDatabase("test", "1.0", "Test DB", 1000000);
+	var db = window.openDatabase("BankerBuddy", "1.0", "Test DB", 3000000);
+	db.transaction(CreateDatabase, errorDB, successDB);
   }
+  
+  function CreateDatabase(tx) {
+	tx.executeSql("CREATE TABLE IF NOT EXISTS Users (ID INT PRIMARY KEY, Username TEXT, Pin INT, Threshold REAL);");
+	tx.executeSql("CREATE TABLE IF NOT EXISTS BalanceHistory (ID INT, Timestamp TEXT, Balance REAL);");
+	tx.executeSql("CREATE TABLE IF NOT EXISTS Deposit (ID INT, Timestamp TEXT, Balance REAL);");
+	tx.executeSql("CREATE TABLE IF NOT EXISTS Withdraw (ID INT, Timestamp TEXT, Balance REAL);");
+	//tx.executeSql("INSERT INTO Users VALUES(1, 'DavidRoberts', 1234, 100.0);");
+  }
+  
+  function errorDB(error) {
+	alert("Database Error : " + error);
+  }
+  
+  function successDB() {
+  }
+  
   </script>
 
   <link rel="stylesheet" href="lib/onsen/css/onsenui.css">  
@@ -29,7 +45,62 @@
 
   <script>
     var module = angular.module('app', ['onsen']);
+	
+	module.factory('QueryService', function(){
+	
+		function queryDatabase($string){
+			var db = window.openDatabase("BankerBuddy", "1.0", "Test DB", 3000000);
+			db.transaction(queryDB, errorDB);
+			var table = [];
+			
+			function queryDB(tx){
+				tx.executeSql($string, [], querySelectSuccess, errorQ);
+			}
+	
+			function errorDB(error){
+				alert("Database Error: " + error);
+			}
+			
+			function errorQ(error){
+				alert("Error processing SQL : " + error);
+			}
+			
+			function querySelectSuccess(tx, results){
+				for (var i = 0; i < results.rows.length; i++){
+					//table.push(results.rows.item(i).Username);
+					//alert(results.rows.item(i).Username + " tst");
+				}
+			}
+			
+			//alert(table);
+		}
+		
+		return{
+			queryDatabase : queryDatabase
+		}
+	});		
+	
+	module.controller('loginCtrl', function($scope, QueryService){
+	
+		$scope.username = "";
+		$scope.pin = "";
+	
+		$scope.validateLogin = function(){
+			if($scope.username == ""){
+				alert("Please Enter a Username.");
+			}
+			else if($scope.pin == ""){
+				alert("Please Enter a Pin.");
+			}
+			else {			
+				QueryService.queryDatabase("SELECT ID FROM Users WHERE Username = '" + $scope.username + "';");
+				myNavigator.pushPage('app.html', { animation : 'fade' } );
+			}
+		}		
+	});
+
   </script>
+
 
   <style>
     .page--menu-page__content {
@@ -97,33 +168,57 @@
 <body> 
 
 <ons-navigator title="Navigator" var="myNavigator">
-    <ons-page modifier="login">
-		<div style="background-color:white; margin-top:5%; margin-left:auto; margin-right:auto; text-align: center; height:320px; width:90%; border:3px inset #808080">
-			<img src="img\BankerBuddy.GIF" style="width 60%; height:15%; margin-top:10%">
-			<div style="margin-top:10%">
-				<ons-icon icon="ion-android-social-user"></ons-icon>
-				<input type="text" class="text-input" placeholder="Username" ng-model="username">
-			</div>
-			<div style="margin-top:1%">
-				<ons-icon icon="ion-pound"></ons-icon>
-				<input type="password" class="text-input" placeholder="Pin" ng-model="pin">
-			</div> 
-			<br>
-			<ons-button modifier="outline" onclick="myNavigator.pushPage('app.html', { animation : 'fade' } )">
-			Sign In
-			</ons-button>
+	<ons-page>
+		<div style="background-color: #333" >
 		</div>
-		<ons-col align="center">
-			<ons-button modifier="quiet" onclick="myNavigator.pushPage('create.html', { animation : 'fade' } )">
-			Create Account
-			</ons-button>
-		</ons-col>
-    </ons-page>
+		<script>
+			setTimeout(function(){myNavigator.pushPage('splash.html',{ animation : 'fade'})}, 100);
+		</script>
+	</ons-page>
+	
+	<ons-template id="splash.html">
+		<ons-page>
+			<div style="width: 100%; height:100%">
+				<img src="img\BankerBuddy_Splash_alt_green.png" style="width: 100%; height:100%">
+			</div>
+			<script>
+			setTimeout(function(){myNavigator.pushPage('login.html',{ animation : 'fade'})}, 3000);
+			</script>
+		</ons-page>
+	</ons-template>
+
+</ons-navigator>
+	
+	<ons-template id="login.html">
+		<ons-page modifier="login">
+		
+			<div style="background-color:white; margin-top:5%; margin-left:auto; margin-right:auto; text-align: center; height:400px; width:90%; border:3px inset #808080" ng-controller="loginCtrl">
+				<img src="img\icon.png" style="width: 50%; margin-top:10%">
+				<div style="margin-top:10%">
+					<ons-icon icon="ion-android-social-user"></ons-icon>
+					<input type="text" class="text-input" placeholder="Username" ng-model="username">
+				</div>
+				<div style="margin-top:1%">
+					<ons-icon icon="ion-pound"></ons-icon>
+					<input type="tel"  class="text-input" placeholder="Pin" ng-model="pin">
+				</div> 
+				<br>
+				<ons-button modifier="outline" ng-click="validateLogin()">
+				Sign In
+				</ons-button>
+			</div>
+			<ons-col align="center">
+				<ons-button modifier="quiet" onclick="myNavigator.pushPage('create.html', { animation : 'fade' } )">
+				Create Account
+				</ons-button>
+			</ons-col>
+		</ons-page>
+	</ons-template>
 
 	<ons-template id="create.html">
 		<ons-page>
-			<div style="margin-top:5%; margin-left:auto; margin-right:auto; text-align: center; height:320px; width:90%">
-				<img src="img\BankerBuddy.GIF" style="width 60%; height:15%; margin-top:10%">
+			<div style="margin-top:6%; margin-left:auto; margin-right:auto; text-align: center; height:320px; width:90%">
+				<img src="img\icon.png" style="width: 50%; margin-top:10%">
 				<div style="margin-top:10%">
 					<ons-icon icon="ion-edit"></ons-icon>
 					<input type="text" class="text-input" placeholder="Username" ng-model="username">
@@ -150,8 +245,8 @@
 
 	<ons-template id="balance.html">
 		<ons-page>
-			<div style="margin-top:5%; margin-left:auto; margin-right:auto; text-align: center; height:320px; width:90%">
-				<img src="img\BankerBuddy.GIF" style="width 60%; height:15%; margin-top:10%">
+			<div style="margin-top:6%; margin-left:auto; margin-right:auto; text-align: center; height:320px; width:90%">
+				<img src="img\icon.png" style="width: 50%; margin-top:10%">
 				<div style="margin-top:10%">
 					<ons-icon icon="ion-social-usd-outline"></ons-icon>
 					<input type="password" class="text-input" placeholder="Balance" ng-model="balance">
@@ -375,8 +470,6 @@
 			</ons-row>
 		</ons-page>
 	</ons-template
-	
-</ons-navigator>
 
 </body>
 </html>

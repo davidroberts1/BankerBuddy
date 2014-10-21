@@ -44,6 +44,8 @@ C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\andr
 C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\assets\www\styles \
 C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\assets\www\css\index.css \
 C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\assets\www\img\BankerBuddy.GIF \
+C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\assets\www\img\BankerBuddy_Splash_alt_green.png \
+C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\assets\www\img\icon.png \
 C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\assets\www\img\logo.png \
 C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\assets\www\js\index.js \
 C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\assets\www\lib\onsen \
