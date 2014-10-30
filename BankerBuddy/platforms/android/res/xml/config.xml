@@ -5,7 +5,10 @@
     <feature name="App">
         <param name="android-package" value="org.apache.cordova.App" />
     </feature>
-    <name>HelloCordova</name>
+    <preference name="orientation" value="portrait" />
+    <preference name="SplashScreen" value="splash" />
+    <preference name="SplashScreenDelay" value="3000" />
+    <name>BankerBuddy</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
     </description>

@@ -18,11 +18,12 @@
   }
   
   function CreateDatabase(tx) {
-	tx.executeSql("CREATE TABLE IF NOT EXISTS Users (ID INT PRIMARY KEY, Username TEXT, Pin INT, Threshold REAL);");
-	tx.executeSql("CREATE TABLE IF NOT EXISTS BalanceHistory (ID INT, Timestamp TEXT, Balance REAL);");
-	tx.executeSql("CREATE TABLE IF NOT EXISTS Deposit (ID INT, Timestamp TEXT, Balance REAL);");
-	tx.executeSql("CREATE TABLE IF NOT EXISTS Withdraw (ID INT, Timestamp TEXT, Balance REAL);");
-	//tx.executeSql("INSERT INTO Users VALUES(1, 'DavidRoberts', 1234, 100.0);");
+	//tx.executeSql("DROP TABLE Users");
+	tx.executeSql("CREATE TABLE IF NOT EXISTS Users (ID INT PRIMARY KEY, Username TEXT, Pin INT, Threshold REAL, Email TEXT)");
+	tx.executeSql("CREATE TABLE IF NOT EXISTS BalanceHistory (ID INT, Timestamp TEXT, Balance REAL)");
+	tx.executeSql("CREATE TABLE IF NOT EXISTS Deposit (ID INT, Timestamp TEXT, Balance REAL)");
+	tx.executeSql("CREATE TABLE IF NOT EXISTS Withdraw (ID INT, Timestamp TEXT, Balance REAL)");
+	//tx.executeSql("INSERT INTO Users VALUES(1, 'DavidRoberts', 1234, 100.0, 'test@csu.fullerton.edu')");
   }
   
   function errorDB(error) {
@@ -48,31 +49,40 @@
 	
 	module.factory('QueryService', function(){
 	
-		function queryDatabase($string){
+		function queryDatabase($string, $col, $callBack){
 			var db = window.openDatabase("BankerBuddy", "1.0", "Test DB", 3000000);
 			db.transaction(queryDB, errorDB);
-			var table = [];
 			
 			function queryDB(tx){
 				tx.executeSql($string, [], querySelectSuccess, errorQ);
+			}
+			
+			function querySelectSuccess(tx, results){
+				if ($col != ""){
+					for (var i = 0; i < results.rows.length; i++){
+					
+						if ($col == "Username"){
+							$callBack.array.push(results.rows.item(i).Username);
+						}
+						
+						if ($col == "Pin"){
+							$callBack.array.push(results.rows.item(i).Pin);
+						}
+						
+						if ($col == "ID"){
+							$callBack.array.push(results.rows.item(i).ID);
+						}
+					}
+				}
+			}
+
+			function errorQ(error){
+				alert("Error processing SQL : " + error);
 			}
 	
 			function errorDB(error){
 				alert("Database Error: " + error);
 			}
-			
-			function errorQ(error){
-				alert("Error processing SQL : " + error);
-			}
-			
-			function querySelectSuccess(tx, results){
-				for (var i = 0; i < results.rows.length; i++){
-					//table.push(results.rows.item(i).Username);
-					//alert(results.rows.item(i).Username + " tst");
-				}
-			}
-			
-			//alert(table);
 		}
 		
 		return{
@@ -86,19 +96,120 @@
 		$scope.pin = "";
 	
 		$scope.validateLogin = function(){
-			if($scope.username == ""){
+		
+			if( !$scope.username ){
 				alert("Please Enter a Username.");
 			}
-			else if($scope.pin == ""){
+			else if( !$scope.pin ){
 				alert("Please Enter a Pin.");
 			}
-			else {			
-				QueryService.queryDatabase("SELECT ID FROM Users WHERE Username = '" + $scope.username + "';");
+			else {
+				var uname = { array: [] };
+				QueryService.queryDatabase("SELECT Username FROM Users WHERE Username = '" + $scope.username + "'", "Username", uname);
+				setTimeout(function(){
+					if(uname.array.length == 0){
+						alert("That Username does not exist.");
+					}
+					}, 50);
+				
+				var pass = { array: [] };
+				QueryService.queryDatabase("SELECT Pin FROM Users WHERE Username = '" + $scope.username + "'", "Pin", pass);
+				setTimeout(function(){
+					if(uname.array.length == 0){
+					}
+					else if($scope.pin != pass.array[0]){
+						alert("That Pin is incorrect.");
+					}
+					else {
+						pushApp();
+					}
+					}, 50);
+			}
+			
+			function pushApp(){			
 				myNavigator.pushPage('app.html', { animation : 'fade' } );
 			}
 		}		
 	});
 
+	module.controller('createCtrl', function($scope, QueryService){
+
+		$scope.username = "";
+		$scope.email = "";
+		$scope.pin = "";
+		$scope.confirmpin = "";
+		$scope.balance = "";
+		$scope.threshold = "";
+	
+		$scope.createAccount = function(){
+			
+			if( !$scope.username ){
+				alert("Please Enter a Username.");
+			}
+			else if( !$scope.email ){
+				alert("Please Enter an email.");
+			}
+			else if( !$scope.pin ){
+				alert("Please Enter a Pin.");
+			}
+			else if( !$scope.confirmpin ){
+				alert("Please Confirm Your Pin.");
+			}
+			else if($scope.pin != $scope.confirmpin){
+				alert("Pin Does Not Match.");
+			}
+			else {
+				var uname = { array: [] };
+				QueryService.queryDatabase("SELECT Username FROM Users WHERE Username = '" + $scope.username + "'", "Username", uname);
+				setTimeout(function(){
+					if(uname.array.length != 0){
+						alert("Sorry.  That username is already taken.");
+					}
+					else {
+						pushBalance();
+					}
+					}, 50);	
+			}
+			
+			function pushBalance(){		
+				var maxID = { array: [] };
+				var newID;
+				QueryService.queryDatabase("SELECT MAX(ID) AS ID FROM Users", "ID", maxID);
+				setTimeout(function(){
+					newID = maxID.array[0] + 1;
+					}, 50);	
+				setTimeout(function(){
+					QueryService.queryDatabase("INSERT INTO Users VALUES(" + newID + ", '" + $scope.username + "', " + $scope.pin + ", 0, '" + $scope.email + "')", "", "");
+
+					myNavigator.pushPage('balance.html', { animation : 'slide' } );
+					}, 50);				
+			}
+		}
+
+		$scope.insertAccount = function(){
+			if( !$scope.balance ){
+				alert("Please Enter a Balance.");
+			}
+			else if( !$scope.threshold ){
+				alert("Please Enter an Threshold.");
+			}
+			else {
+				var maxID = { array: [] };
+				QueryService.queryDatabase("SELECT MAX(ID) AS ID FROM Users", "ID", maxID);			
+
+				setTimeout(function(){				
+					QueryService.queryDatabase("UPDATE Users SET Threshold = " + $scope.threshold + " WHERE ID = " + maxID.array[0], "", "");
+
+					pushApp();
+					}, 50);	
+			}
+
+			function pushApp(){			
+				myNavigator.pushPage('app.html', { animation : 'fade' } )
+			}
+		}	
+	});
+	
   </script>
 
 
@@ -168,56 +279,35 @@
 <body> 
 
 <ons-navigator title="Navigator" var="myNavigator">
-	<ons-page>
-		<div style="background-color: #333" >
+
+	<ons-page modifier="login">
+		<div style="background-color:#1AAF5D; 
+					margin-top:15%; margin-left:auto; margin-right:auto; text-align: center; height:75%; width:90%; border:1px inset #3e3e3e; box-shadow: 10px 10px 5px #3e3e3e;" ng-controller="loginCtrl">
+			<img src="img\icon.png" style="width: 50%; margin-top:10%">
+			<div style="margin-top:10%">
+				<ons-icon icon="ion-android-social-user"></ons-icon>
+				<input type="text" class="text-input" placeholder="Username" ng-model="username">
+			</div>
+			<div style="margin-top:1%">
+				<ons-icon icon="ion-pound"></ons-icon>
+				<input type="tel"  class="text-input" placeholder="Pin" ng-model="pin">
+			</div> 
+			<br>
+			<ons-button modifier="" ng-click="validateLogin()">
+			Sign In
+			</ons-button>
 		</div>
-		<script>
-			setTimeout(function(){myNavigator.pushPage('splash.html',{ animation : 'fade'})}, 100);
-		</script>
-	</ons-page>
-	
-	<ons-template id="splash.html">
-		<ons-page>
-			<div style="width: 100%; height:100%">
-				<img src="img\BankerBuddy_Splash_alt_green.png" style="width: 100%; height:100%">
-			</div>
-			<script>
-			setTimeout(function(){myNavigator.pushPage('login.html',{ animation : 'fade'})}, 3000);
-			</script>
-		</ons-page>
-	</ons-template>
-
-</ons-navigator>
-	
-	<ons-template id="login.html">
-		<ons-page modifier="login">
+		<ons-col align="center">
+			<ons-button modifier="" onclick="myNavigator.pushPage('create.html', { animation : 'fade' } )">
+			Create Account
+			</ons-button>
+		</ons-col>
+	</ons-page>		
 		
-			<div style="background-color:white; margin-top:5%; margin-left:auto; margin-right:auto; text-align: center; height:400px; width:90%; border:3px inset #808080" ng-controller="loginCtrl">
-				<img src="img\icon.png" style="width: 50%; margin-top:10%">
-				<div style="margin-top:10%">
-					<ons-icon icon="ion-android-social-user"></ons-icon>
-					<input type="text" class="text-input" placeholder="Username" ng-model="username">
-				</div>
-				<div style="margin-top:1%">
-					<ons-icon icon="ion-pound"></ons-icon>
-					<input type="tel"  class="text-input" placeholder="Pin" ng-model="pin">
-				</div> 
-				<br>
-				<ons-button modifier="outline" ng-click="validateLogin()">
-				Sign In
-				</ons-button>
-			</div>
-			<ons-col align="center">
-				<ons-button modifier="quiet" onclick="myNavigator.pushPage('create.html', { animation : 'fade' } )">
-				Create Account
-				</ons-button>
-			</ons-col>
-		</ons-page>
-	</ons-template>
-
+</ons-navigator>
 	<ons-template id="create.html">
 		<ons-page>
-			<div style="margin-top:6%; margin-left:auto; margin-right:auto; text-align: center; height:320px; width:90%">
+			<div style="margin-top:6%; margin-left:auto; margin-right:auto; text-align: center; height:320px; width:90%" ng-controller="createCtrl">
 				<img src="img\icon.png" style="width: 50%; margin-top:10%">
 				<div style="margin-top:10%">
 					<ons-icon icon="ion-edit"></ons-icon>
@@ -229,14 +319,14 @@
 				</div>  
 				<div style="margin-top:1%">
 					<ons-icon icon="ion-pound"></ons-icon>
-					<input type="password" class="text-input" placeholder="Pin" ng-model="pin">
+					<input type="tel" class="text-input" placeholder="Pin" ng-model="pin">
 				</div> 
 				<div style="margin-top:1%">
 					<ons-icon icon="ion-pound"></ons-icon>
-					<input type="password" class="text-input" placeholder="Confirm Pin" ng-model="confirmpin">
+					<input type="tel" class="text-input" placeholder="Confirm Pin" ng-model="confirmpin">
 				</div> 
 				<br>
-				<ons-button modifier="outline" onclick="myNavigator.pushPage('balance.html', { animation : 'slide' } )">
+				<ons-button modifier="outline" ng-click="createAccount()">
 					<ons-icon icon="ion-chevron-right" size="40px"></ons-icon>
 				</ons-button>
 			</div>
@@ -245,18 +335,18 @@
 
 	<ons-template id="balance.html">
 		<ons-page>
-			<div style="margin-top:6%; margin-left:auto; margin-right:auto; text-align: center; height:320px; width:90%">
+			<div style="margin-top:6%; margin-left:auto; margin-right:auto; text-align: center; height:320px; width:90%" ng-controller="createCtrl">
 				<img src="img\icon.png" style="width: 50%; margin-top:10%">
 				<div style="margin-top:10%">
 					<ons-icon icon="ion-social-usd-outline"></ons-icon>
-					<input type="password" class="text-input" placeholder="Balance" ng-model="balance">
+					<input type="tel" class="text-input" placeholder="Balance" ng-model="balance">
 				</div> 
 				<div style="margin-top:1%">
 					<ons-icon icon="ion-stats-bars"></ons-icon>
-					<input type="password" class="text-input" placeholder="Threshold" ng-model="threshold">
+					<input type="tel" class="text-input" placeholder="Threshold" ng-model="threshold">
 				</div> 
 				<br>
-				<ons-button modifier="outline" onclick="myNavigator.pushPage('app.html', { animation : 'fade' } )">
+				<ons-button modifier="outline" ng-click="insertAccount()">
 					<ons-icon icon="ion-android-add" size="40px"></ons-icon>
 				</ons-button>
 			</div>
