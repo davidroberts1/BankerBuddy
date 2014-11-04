@@ -19,11 +19,18 @@
   
   function CreateDatabase(tx) {
 	//tx.executeSql("DROP TABLE Users");
+	//tx.executeSql("DROP TABLE Withdraw");
 	tx.executeSql("CREATE TABLE IF NOT EXISTS Users (ID INT PRIMARY KEY, Username TEXT, Pin INT, Threshold REAL, Email TEXT)");
 	tx.executeSql("CREATE TABLE IF NOT EXISTS BalanceHistory (ID INT, Timestamp TEXT, Balance REAL)");
 	tx.executeSql("CREATE TABLE IF NOT EXISTS Deposit (ID INT, Timestamp TEXT, Balance REAL)");
 	tx.executeSql("CREATE TABLE IF NOT EXISTS Withdraw (ID INT, Timestamp TEXT, Balance REAL)");
-	//tx.executeSql("INSERT INTO Users VALUES(1, 'DavidRoberts', 1234, 100.0, 'test@csu.fullerton.edu')");
+	tx.executeSql("CREATE TABLE IF NOT EXISTS CurrentID (CurrentUser INT, ID INT)");
+	//tx.executeSql("INSERT INTO CurrentID VALUES(0, 0)");
+	//tx.executeSql("INSERT INTO Users VALUES(1, 'DavidR', 1234, 1.0, 'test')");
+	//tx.executeSql("INSERT INTO Deposit VALUES(2, '2014-10-30', 80.0)");
+	//tx.executeSql("INSERT INTO Withdraw VALUES(2, '2014-10-31', -30.0)");
+	//tx.executeSql("INSERT INTO BalanceHistory VALUES(2, '2014-11-2', 50.0)");
+	//tx.executeSql("INSERT INTO BalanceHistory VALUES(1, '2014-11-2', 30.0)");
   }
   
   function errorDB(error) {
@@ -41,8 +48,10 @@
 
   <script src="lib/onsen/js/angular/angular.js"></script>    
   <script src="lib/onsen/js/onsenui.js"></script>    
-
+  <script src="js/jquery.min.js"></script>
   <script src="cordova.js"></script>
+  <script src="js/highcharts.js"></script>
+  <script src="js/modules/exporting.js"></script>
 
   <script>
     var module = angular.module('app', ['onsen']);
@@ -105,12 +114,14 @@
 			}
 			else {
 				var uname = { array: [] };
+				var userID = { array: [] };
 				QueryService.queryDatabase("SELECT Username FROM Users WHERE Username = '" + $scope.username + "'", "Username", uname);
+				QueryService.queryDatabase("SELECT ID FROM Users WHERE Username = '" + $scope.username + "'", "ID", userID);
 				setTimeout(function(){
 					if(uname.array.length == 0){
 						alert("That Username does not exist.");
 					}
-					}, 50);
+					}, 100);
 				
 				var pass = { array: [] };
 				QueryService.queryDatabase("SELECT Pin FROM Users WHERE Username = '" + $scope.username + "'", "Pin", pass);
@@ -121,9 +132,13 @@
 						alert("That Pin is incorrect.");
 					}
 					else {
-						pushApp();
+						QueryService.queryDatabase("UPDATE CurrentID SET ID = " + userID.array[0] + " WHERE CurrentUser = 0;", "", "");
+
+						setTimeout(function(){	
+							pushApp();
+						}, 100);
 					}
-					}, 50);
+					}, 100);
 			}
 			
 			function pushApp(){			
@@ -168,7 +183,7 @@
 					else {
 						pushBalance();
 					}
-					}, 50);	
+					}, 100);	
 			}
 			
 			function pushBalance(){		
@@ -177,12 +192,12 @@
 				QueryService.queryDatabase("SELECT MAX(ID) AS ID FROM Users", "ID", maxID);
 				setTimeout(function(){
 					newID = maxID.array[0] + 1;
-					}, 50);	
+					}, 100);	
 				setTimeout(function(){
 					QueryService.queryDatabase("INSERT INTO Users VALUES(" + newID + ", '" + $scope.username + "', " + $scope.pin + ", 0, '" + $scope.email + "')", "", "");
 
 					myNavigator.pushPage('balance.html', { animation : 'slide' } );
-					}, 50);				
+					}, 100);				
 			}
 		}
 
@@ -199,9 +214,10 @@
 
 				setTimeout(function(){				
 					QueryService.queryDatabase("UPDATE Users SET Threshold = " + $scope.threshold + " WHERE ID = " + maxID.array[0], "", "");
-
+					QueryService.queryDatabase("UPDATE CurrentID SET ID = " + maxID.array[0] + " WHERE CurrentUser = 0", "", "");
+					
 					pushApp();
-					}, 50);	
+					}, 100);	
 			}
 
 			function pushApp(){			
@@ -209,7 +225,74 @@
 			}
 		}	
 	});
+
+	module.controller('PopulateHomeData', function($scope, QueryService, $timeout){
 	
+			var IDcurrent = { array: [] };
+			var amount = { array: [] };
+			var time = { array: [] };
+			var bal = { array: [] };
+			
+			QueryService.queryDatabase("SELECT ID FROM CurrentID WHERE CurrentUser = 0", "ID", IDcurrent);
+			
+			$timeout(function(){				
+				QueryService.queryDatabase("SELECT Timestamp, Balance AS ID FROM Deposit WHERE ID = " + IDcurrent.array[0] + " UNION SELECT Timestamp, Balance FROM Withdraw WHERE ID = " + IDcurrent.array[0] + " ORDER BY Timestamp DESC LIMIT 5", "ID", amount);
+				QueryService.queryDatabase("SELECT Timestamp AS ID, Balance FROM Deposit WHERE ID = " + IDcurrent.array[0] + " UNION SELECT Timestamp, Balance FROM Withdraw WHERE ID = " + IDcurrent.array[0] + " ORDER BY Timestamp DESC LIMIT 5", "ID", time);
+			
+				$timeout(function(){
+
+					$scope.rows = [];
+					for(var i = 0; i < amount.array.length; i++){
+						$scope.rows.push({
+							'Date': String(time.array[i]),
+							'Amount': String(amount.array[i])});
+					}					
+					}, 100);
+				}, 100);
+			
+			$timeout(function(){
+				QueryService.queryDatabase("SELECT Balance AS ID FROM BalanceHistory WHERE ID = " + IDcurrent.array[0] + " ORDER BY Timestamp DESC LIMIT 1", "ID", bal);
+				
+				$timeout(function(){
+					$scope.balance = bal.array[0];
+					}, 100);
+				}, 100);
+				
+		$timeout(function(){		
+		$('#container').highcharts({
+			title: {
+				text: 'Balance History',
+				x: -20 //center
+			},
+			xAxis: {
+				categories: ['9/15', '9/22', '9/29', '10/6', '10/13', '10/20',
+					'10/27', '11/3']
+			},
+			yAxis: {
+				title: {
+					text: 'Balance ($)'
+				},
+				plotLines: [{
+					value: 0,
+					width: 1,
+					color: '#808080'
+				}]
+			},
+			tooltip: {
+				valuePrefix: '$'
+			},
+			series: [{
+				name: 'David',
+				data: [27.0, 26.9, 29.5, 34.5, 38.2, 41.5, 45.2, 50.0]
+			}, {
+				name: 'Threshold',
+				data: [30, 30, 30, 30, 30, 30, 30, 30]
+			}]
+		});
+		}, 300);
+			
+			
+	});
   </script>
 
 
@@ -282,7 +365,7 @@
 
 	<ons-page modifier="login">
 		<div style="background-color:#1AAF5D; 
-					margin-top:15%; margin-left:auto; margin-right:auto; text-align: center; height:75%; width:90%; border:1px inset #3e3e3e; box-shadow: 10px 10px 5px #3e3e3e;" ng-controller="loginCtrl">
+					margin-top:15%; margin-left:auto; margin-right:auto; text-align: center; height:420px; width:90%; border:1px inset #3e3e3e; box-shadow: 10px 10px 5px #3e3e3e;" ng-controller="loginCtrl">
 			<img src="img\icon.png" style="width: 50%; margin-top:10%">
 			<div style="margin-top:10%">
 				<ons-icon icon="ion-android-social-user"></ons-icon>
@@ -293,10 +376,11 @@
 				<input type="tel"  class="text-input" placeholder="Pin" ng-model="pin">
 			</div> 
 			<br>
-			<ons-button modifier="" ng-click="validateLogin()">
+			<ons-button modifier="cta" ng-click="validateLogin()">
 			Sign In
 			</ons-button>
 		</div>
+		<br>
 		<ons-col align="center">
 			<ons-button modifier="" onclick="myNavigator.pushPage('create.html', { animation : 'fade' } )">
 			Create Account
@@ -308,7 +392,7 @@
 	<ons-template id="create.html">
 		<ons-page>
 			<div style="margin-top:6%; margin-left:auto; margin-right:auto; text-align: center; height:320px; width:90%" ng-controller="createCtrl">
-				<img src="img\icon.png" style="width: 50%; margin-top:10%">
+				<img src="img\icon1.png" style="width: 50%; margin-top:10%">
 				<div style="margin-top:10%">
 					<ons-icon icon="ion-edit"></ons-icon>
 					<input type="text" class="text-input" placeholder="Username" ng-model="username">
@@ -395,7 +479,7 @@
 				</ons-list-item>
 
 				<ons-list-item class="bottom-menu-item" ng-click="menu.setMainPage('page5.html', {closeMenu: true})">
-				Help
+				`About
 				</ons-list-item>
 
 				<ons-list-item class="bottom-menu-item" ng-click="menu.setMainPage('page6.html', {closeMenu: true})">
@@ -416,12 +500,28 @@
 				<div class="center">Home</div>
 			</ons-toolbar>
 
-			<ons-row style="margin-top: 100px;">
+			<ons-row style="margin-top: 10px;">
 				<ons-col align="center">
-					<ons-button modifier="light" ng-click="menu.toggleMenu()">
-					Toggle Menu
-					</ons-button>
-					<p style="color: #999; font-size: 13px;">Click "Toggle Menu" to close/open menu,<br> You can also swipe the page left/right.</p>
+					<div ng-controller="PopulateHomeData">
+						<div>
+						<table style="border: 1px solid black">
+						<thead style="background-color: LightBlue">
+							<tr>
+								<th width="200">Date</th>
+								<th width="200">Amount</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="rowContent in rows">
+								<td>{{rowContent.Date}}</td>
+								<td>{{rowContent.Amount}}</td>
+							</tr>
+						</tbody>
+						</table>   
+						</div>
+						<div style="font-size: 36px"><p><b>Balance:  ${{balance}}</b></p></div>
+						<div id="container" style="min-width: 100%; height: 225px"></div>
+					</div>
 				</ons-col>
 			</ons-row>
 		</ons-page>
