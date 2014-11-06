@@ -1,44 +1,30 @@
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-gen\io\cordova\hellocordova\R.java \
- : C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\res\drawable\icon.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\res\drawable\icon_old.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\res\drawable-hdpi\icon.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\res\drawable-hdpi\icon_old.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\res\drawable-land-hdpi\screen.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\res\drawable-land-ldpi\screen.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\res\drawable-land-mdpi\screen.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\res\drawable-land-xhdpi\screen.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\res\drawable-ldpi\icon.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\res\drawable-mdpi\icon.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\res\drawable-port-hdpi\screen_old.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\res\drawable-port-hdpi\splash.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\res\drawable-port-ldpi\screen_old.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\res\drawable-port-ldpi\splash.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\res\drawable-port-mdpi\screen_old.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\res\drawable-port-mdpi\splash.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\res\drawable-port-xhdpi\screen_old.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\res\drawable-port-xhdpi\splash.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\res\drawable-xhdpi\icon.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\res\drawable-xhdpi\icon_old.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\res\values\strings.xml \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\res\xml\config.xml \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\res\drawable\icon.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\res\drawable\icon_old.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\res\drawable-hdpi\icon.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\res\drawable-hdpi\icon_old.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\res\drawable-land-hdpi\screen.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\res\drawable-land-ldpi\screen.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\res\drawable-land-mdpi\screen.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\res\drawable-land-xhdpi\screen.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\res\drawable-ldpi\icon.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\res\drawable-mdpi\icon.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\res\drawable-port-hdpi\screen_old.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\res\drawable-port-hdpi\splash.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\res\drawable-port-ldpi\screen_old.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\res\drawable-port-ldpi\splash.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\res\drawable-port-mdpi\screen_old.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\res\drawable-port-mdpi\splash.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\res\drawable-port-xhdpi\screen_old.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\res\drawable-port-xhdpi\splash.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\res\drawable-xhdpi\icon.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\res\drawable-xhdpi\icon_old.png \
-C:\Users\droberts\Git CPSC 462 Repository\BankerBuddy\BankerBuddy\platforms\android\ant-build\AndroidManifest.xml \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/ant-gen/io/cordova/hellocordova/R.java \
+ : /Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/res/drawable/icon.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/res/drawable-hdpi/icon.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/res/drawable-land-hdpi/screen.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/res/drawable-land-ldpi/screen.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/res/drawable-land-mdpi/screen.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/res/drawable-land-xhdpi/screen.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/res/drawable-ldpi/icon.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/res/drawable-mdpi/icon.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/res/drawable-port-hdpi/screen.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/res/drawable-port-ldpi/screen.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/res/drawable-port-mdpi/screen.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/res/drawable-port-xhdpi/screen.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/res/drawable-xhdpi/icon.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/res/values/strings.xml \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/res/xml/config.xml \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/ant-build/res/drawable/icon.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/ant-build/res/drawable-hdpi/icon.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/ant-build/res/drawable-land-hdpi/screen.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/ant-build/res/drawable-land-ldpi/screen.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/ant-build/res/drawable-land-mdpi/screen.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/ant-build/res/drawable-land-xhdpi/screen.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/ant-build/res/drawable-ldpi/icon.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/ant-build/res/drawable-mdpi/icon.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/ant-build/res/drawable-port-hdpi/screen.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/ant-build/res/drawable-port-ldpi/screen.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/ant-build/res/drawable-port-mdpi/screen.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/ant-build/res/drawable-port-xhdpi/screen.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/ant-build/res/drawable-xhdpi/icon.png \
+/Users/angelcastrejon/workspace/phonegap/BankerBuddy/BankerBuddy/platforms/android/ant-build/AndroidManifest.xml \
